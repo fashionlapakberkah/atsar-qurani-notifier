@@ -17,7 +17,7 @@ jobs:
           node-version: 18
           cache: npm
           cache-dependency-path: fcm-sender/package.json
-      - run: npm ci
+      - run: npm install
         working-directory: fcm-sender
       - run: node sender.js
         working-directory: fcm-sender
