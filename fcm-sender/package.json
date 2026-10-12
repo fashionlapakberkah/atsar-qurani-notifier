@@ -1,0 +1,7 @@
+{
+  "name": "atsar-qurani-fcm-sender",
+  "private": true,
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}
