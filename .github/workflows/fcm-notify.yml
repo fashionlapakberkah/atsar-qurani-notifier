@@ -1,0 +1,25 @@
+# Atsar Qurani — kirim notifikasi FCM tiap 5 menit (GRATIS).
+# Secret repo yang wajib ada: GCLOUD_SERVICE_KEY (isi serviceAccount.json).
+name: fcm-notify
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # tombol jalan manual dari tab Actions
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: fcm-sender/package.json
+      - run: npm ci
+        working-directory: fcm-sender
+      - run: node sender.js
+        working-directory: fcm-sender
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
