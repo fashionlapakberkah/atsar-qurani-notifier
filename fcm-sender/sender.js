@@ -3,7 +3,7 @@
  *
  * Dijalankan terjadwal (.github/workflows/fcm-notify.yml) tiap 5 menit.
  * Memindai dokumen BARU (createdAt > penanda) di tahsin / tahfidz /
- * targetHafalan, lalu push ke topik aq_user_<studentId> di HP siswa.
+ * targetHafalan / targetMurojaah, lalu push ke topik aq_user_<studentId> di HP siswa.
  *
  * Secret yang dibutuhkan (repo Settings > Secrets > Actions):
  *   GCLOUD_SERVICE_KEY = seluruh isi file serviceAccount.json
@@ -45,6 +45,12 @@ const COLLS = [
     title: 'Target Hafalan Baru',
     body: () => 'Ada Target Hafalan baru untuk Ananda. Buka aplikasi untuk melihat.',
     data: (d, id) => ({ type: 'TARGET', rowId: d.id || id }),
+  },
+  {
+    name: 'targetMurojaah',
+    title: 'Target Murojaah Baru',
+    body: () => 'Ada Target Murojaah baru untuk Ananda. Buka aplikasi untuk melihat.',
+    data: (d, id) => ({ type: 'MUROJAAH', rowId: d.id || id }),
   },
 ];
 
