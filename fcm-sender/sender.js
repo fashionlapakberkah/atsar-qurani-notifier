@@ -14,9 +14,21 @@
 
 const admin = require('firebase-admin');
 
-const KEY = JSON.parse(process.env.GCLOUD_SERVICE_KEY || '{}');
+const fs = require('fs');
+const path = require('path');
+
+function loadKey() {
+  try {
+    if (process.env.GCLOUD_SERVICE_KEY) return JSON.parse(process.env.GCLOUD_SERVICE_KEY);
+  } catch (e) { /* lanjut ke file lokal */ }
+  // Dipakai PC TU: serviceAccount.json ditaruh di samping sender.js (di-ignore git).
+  try {
+    return JSON.parse(fs.readFileSync(path.join(__dirname, 'serviceAccount.json'), 'utf8'));
+  } catch (e) { return {}; }
+}
+const KEY = loadKey();
 if (!KEY.client_email || !KEY.private_key || !KEY.project_id) {
-  console.error('GAGAL: secret GCLOUD_SERVICE_KEY belum diisi / tidak lengkap.');
+  console.error('GAGAL: kunci belum ada. Isi secret GCLOUD_SERVICE_KEY (GitHub) atau taruh serviceAccount.json di samping sender.js (PC).');
   process.exit(1);
 }
 admin.initializeApp({ credential: admin.credential.cert(KEY) });
